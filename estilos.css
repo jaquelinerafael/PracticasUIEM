@@ -1,0 +1,246 @@
+:root {
+    --primary: #0f4c3a;
+    --secondary: #d4af37;
+    --bg: #f4f6f8;
+    --dark: #333;
+    --border: #cccccc;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--dark);
+}
+
+header {
+    background-color: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+h2 {
+    margin-top: 0;
+    color: var(--primary);
+    border-bottom: 2px solid var(--secondary);
+    padding-bottom: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: bold;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.btn-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+button {
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-primary { background: var(--primary); color: white; }
+.btn-secondary { background: #6c757d; color: white; }
+.btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 0.6rem;
+    text-align: left;
+}
+
+th { background: #f0f0f0; }
+
+/* =========================================================
+   OCULTAR FORMATO DE IMPRESIÓN EN LA PANTALLA NORMAL (WEB)
+   ========================================================= */
+#print-zone {
+    display: none !important;
+}
+
+/* =========================================================
+   IMPRESIÓN: FORMATO GRANDE A MEDIA HOJA CARTA REAL (13.8 CM)
+   ========================================================= */
+@media print {
+    @page {
+        size: letter portrait;
+        margin: 1cm 1.2cm;
+    }
+
+    html, body {
+        background: #ffffff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    /* Oculta la interfaz web y cualquier segunda copia */
+    body > header,
+    body > .container,
+    .cut-line,
+    .vale-copia:nth-of-type(2) {
+        display: none !important;
+    }
+
+    #print-zone {
+        display: block !important;
+        width: 100% !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* CONTENEDOR PRINCIPAL: MEDIA HOJA CARTA EXACTA */
+    .vale-copia:first-of-type {
+        display: block !important;
+        width: 100% !important;
+        height: 13.8cm !important;
+        border-bottom: 1px dashed #999999 !important; /* Guía visual de media hoja */
+        padding-bottom: 0.4cm !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 1. ENCABEZADO Y LOGOS MÁS GRANDES (ALTO ~2.4 CM) */
+    .header-logos {
+        display: table !important;
+        width: 100% !important;
+        border-bottom: 2px solid #000 !important;
+        padding-bottom: 12px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .logo-left, .logo-center, .logo-right {
+        display: table-cell !important;
+        vertical-align: middle !important;
+    }
+
+    .logo-left { text-align: left; width: 33%; }
+    .logo-center { text-align: center; width: 34%; font-size: 13pt !important; }
+    .logo-right { text-align: right; width: 33%; }
+
+    .header-logos img {
+        max-height: 70px !important;
+        max-width: 210px !important;
+        width: auto !important;
+        object-fit: contain !important;
+    }
+
+    /* 2. TÍTULO Y FECHA AMPLIOS (ALTO ~2 CM) */
+    .header-title {
+        font-size: 16pt !important;
+        font-weight: bold !important;
+        text-align: center !important;
+        margin: 16px 0 12px 0 !important;
+        letter-spacing: 1px !important;
+    }
+
+    .fecha-container {
+        text-align: right !important;
+        padding-right: 10px !important;
+        margin-bottom: 16px !important;
+        font-size: 12pt !important;
+    }
+
+    /* 3. TABLA CON CELDAS ALTAS PARA LLENAR A MANO O CON VARIOS ITEMS (ALTO ~5.5 CM) */
+    .table-frame {
+        border: 3px double #000 !important;
+        padding: 3px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .document-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        display: table !important;
+    }
+
+    .document-table th {
+        display: table-cell !important;
+        border: 1.5px solid #000 !important;
+        background-color: #f2f2f2 !important;
+        font-weight: bold !important;
+        text-transform: uppercase !important;
+        text-align: center !important;
+        font-size: 11.5pt !important;
+        padding: 10px 8px !important;
+    }
+
+    .document-table td {
+        display: table-cell !important;
+        border: 1.5px solid #000 !important;
+        text-align: center !important;
+        font-size: 12pt !important;
+        padding: 14px 10px !important;
+        height: 68px !important; /* Altura amplia en cada fila de datos */
+        vertical-align: middle !important;
+        word-wrap: break-word !important;
+    }
+
+    /* 4. FIRMAS SEPARADAS Y BAJADAS HASTA EL BORDE DE MEDIA HOJA */
+    .signatures {
+        margin-top: 85px !important; /* Separa las líneas de firma de la tabla */
+        display: table !important;
+        width: 100% !important;
+    }
+
+    .signature-box {
+        display: table-cell !important;
+        width: 42% !important;
+        text-align: center !important;
+        border-top: 1.5px solid #000 !important;
+        padding-top: 8px !important;
+        font-weight: bold !important;
+        font-size: 11pt !important;
+    }
+
+    .signature-spacer {
+        display: table-cell !important;
+        width: 16% !important;
+    }
+}

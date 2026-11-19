@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENTREGA DE MATERIAL INFORMÁTICO - UIEM</title>
+    <!-- Vinculación del archivo CSS separado -->
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <header>
+        <h1>DEPARTAMENTO DE INFORMÁTICA</h1>
+        <span>Sistema de Gestión de Entregas e Inventario</span>
+    </header>
+
+    <div class="container">
+        <!-- FORMULARIO DE CAPTURA Y VALE DE ENTREGA -->
+        <div class="card">
+            <h2>Generar Vale de Entrega</h2>
+            <form id="delivery-form">
+                <div class="form-group">
+                    <label>Fecha:</label>
+                    <input type="date" id="fecha" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Nombre del Responsable (Entrega):</label>
+                    <input type="text" id="responsable" list="lista-responsables" placeholder="Selecciona o escribe..." required>
+                    <datalist id="lista-responsables"></datalist>
+                </div>
+
+                <div class="form-group">
+                    <label>Persona que Recibe:</label>
+                    <input type="text" id="recibe" list="lista-personal" placeholder="Selecciona o escribe..." required>
+                    <datalist id="lista-personal"></datalist>
+                </div>
+
+                <div class="form-group">
+                    <label>Área, Dirección o Campus:</label>
+                    <input type="text" id="area" list="lista-areas" placeholder="Selecciona o escribe..." required>
+                    <datalist id="lista-areas">
+                        <!-- Campus / Sedes -->
+                        <option value="Tepetlixpa">
+                        <option value="Xonacatlán">
+                        <option value="Temoaya">
+                        <!-- Rectoría y Direcciones -->
+                        <option value="Rectoría">
+                        <option value="Dirección de Administración y Finanzas">
+                        <option value="Abogacía General e Igualdad de Género">
+                        <option value="Dirección de División de Comunicación Intercultural">
+                        <option value="Dirección de División de Lengua y Cultura">
+                        <option value="Dirección de División de Salud Intercultural">
+                        <option value="Dirección de División de Desarrollo Sustentable">
+                        <option value="Dirección de Coordinación Académica">
+                        <option value="Dirección de Vinculación y Extensión Universitaria">
+                        <option value="Dirección de la Clínica de Salud Intercultural">
+                        <!-- Departamentos -->
+                        <option value="Departamento de Licenciatura en Enfermería">
+                        <option value="Departamento de Licenciatura en Arte y Diseño">
+                        <option value="Licenciatura en Ciencias del Agua y la Tierra">
+                        <option value="MIPCE">
+                        <option value="MGIRS">
+                        <option value="Departamento de Vinculación">
+                        <option value="Departamento de Extensión y Difusión">
+                        <option value="Redes">
+                        <option value="Departamento de Recursos Financieros">
+                        <option value="Departamento de Recursos Materiales y servicios Generales">
+                        <option value="Departamento de Recursos Humanos">
+                        <option value="Departamento de Planeación Programación y Evaluación">
+                        <option value="Departamento de Biblioteca">
+                        <option value="Departamento de Informática">
+                        <option value="Departamento de Investigación y Posgrado">
+                        <option value="Departamento de Control Escolar">
+                        <option value="Tutorías">
+                    </datalist>
+                </div>
+
+                <!-- SECTOR DE SELECCIÓN DE PRODUCTOS Y SUMA -->
+                <div class="form-group" style="background: #f8f9fa; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <label>Agregar Materiales al Vale:</label>
+                    <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                        <select id="producto-select" style="flex: 2;">
+                            <option value="">Cargando catálogo...</option>
+                        </select>
+                        <input type="number" id="cantidad" min="1" value="1" placeholder="Cant." style="width: 70px;">
+                        <button type="button" onclick="agregarProductoAEntrega()" class="btn-outline" style="padding: 5px 10px;">+ Agregar</button>
+                    </div>
+
+                    <table id="tabla-vale-temporal" style="font-size: 0.85em; background: white;">
+                        <thead>
+                            <tr>
+                                <th>Material</th>
+                                <th style="width: 60px;">Cant.</th>
+                                <th style="width: 40px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Total de Piezas:</th>
+                                <th id="total-piezas-vale">0</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="btn-group">
+    <button type="submit" class="btn-primary">Registrar e Imprimir</button>
+    <button type="button" onclick="imprimirEnBlanco()" class="btn-secondary">Imprimir Formato Blanco</button>
+</div>
+            </form>
+        </div>
+		<!-- CATÁLOGO E INVENTARIO CON BOTÓN DE ACTUALIZACIÓN -->
+<div class="card">
+    <h2 id="catalog-title">Catálogo e Inventario</h2>
+    <form id="catalog-form">
+        <!-- Campo oculto para identificar el ID en edición -->
+        <input type="hidden" id="edit-prod-id" value="">
+
+        <div class="form-group">
+            <label>Nombre del Material:</label>
+            <input type="text" id="nuevo-prod-nombre" placeholder="Ej. CABLE USB A-B 4.5 MANHATTAN" required>
+        </div>
+        <div class="form-group">
+            <label>Stock Total:</label>
+            <input type="number" id="nuevo-prod-stock" min="0" value="10" required>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" id="btn-save-catalog" class="btn-outline">Agregar al Catálogo</button>
+            <button type="button" id="btn-cancel-edit" onclick="cancelarEdicionCatálogo()" class="btn-secondary" style="display: none;">Cancelar Edición</button>
+        </div>
+    </form>
+
+    <table id="inventory-table">
+        <thead>
+            <tr>
+                <th>Material</th>
+                <th style="width: 80px;">Stock</th>
+                <th style="width: 140px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+        
+    </div>
+
+<!-- FORMATO DE IMPRESIÓN OFICIAL (FECHA Y BORDES CORREGIDOS) -->
+
+<div id="print-zone">
+    <div class="header-logos">
+        <div class="logo-left">
+            <img src="logo_edomex.png" alt="Gobierno del Estado de México">
+        </div>
+        <div class="logo-center">
+            <strong>DEPARTAMENTO DE INFORMÁTICA</strong>
+        </div>
+        <div class="logo-right">
+            <img src="logo_uiem.png" alt="Universidad Intercultural del Estado de México">
+        </div>
+    </div>
+
+    <div class="header-title">ENTREGA DE MATERIAL INFORMÁTICO</div>
+
+    <div class="fecha-container">
+        <strong>FECHA:</strong> <span id="p-fecha">16/10/2026</span>
+    </div>
+
+    <div class="table-frame">
+        <table class="document-table">
+            <thead>
+                <tr>
+                    <th style="width: 40%;">NOMBRE DEL RESPONSABLE</th>
+                    <th style="width: 60%;">DESCRIPCIÓN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="p-responsable" style="height: 38px;">-</td>
+                    <td id="p-descripcion">-</td>
+                </tr>
+                <tr>
+                    <th>ÁREA</th>
+                    <th>CANTIDAD</th>
+                </tr>
+                <tr>
+                    <td id="p-area">-</td>
+                    <td id="p-cantidad">-</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="signatures">
+        <div class="signature-box">
+            <span id="p-entrega-nombre">-</span><br>
+            ENTREGA
+        </div>
+        <div class="signature-spacer"></div>
+        <div class="signature-box">
+            <span id="p-recibe-nombre">-</span><br>
+            RECIBE
+        </div>
+    </div>
+</div>
+
+    <!-- Vinculación del archivo JavaScript separado -->
+    <script src="app.js"></script>
+</body>
+</html>
